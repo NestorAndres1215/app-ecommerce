@@ -2,11 +2,14 @@ import User from "../models/User.js";
 import Role from "../models/Role.js";
 import Status from "../models/Status.js";
 import bcrypt from "bcrypt";
+import { ROLES } from "../utils/roles.js";
+import { MESSAGES } from "../utils/constants.js";
+import { STATUS } from "../utils/status.js";
 
 export const getAllUsers = async () => {
   return await User.findAll({
     include: [
-      { model: Role, as: "role", where: { name: "admin" } }, // solo admins
+      { model: Role, as: "role", where: { name: ROLES.ADMIN } }, // solo admins
       { model: Status, as: "status" }
     ]
   });
@@ -26,10 +29,10 @@ export const createUser = async (userData) => {
 
   // Verificar si el email o username ya existen
   const userExists = await User.findOne({ where: { email } });
-  if (userExists) throw new Error("El correo ya está registrado");
+  if (userExists) throw new Error(MESSAGES.CORREO_EXISTE);
 
   const usernameExists = await User.findOne({ where: { username } });
-  if (usernameExists) throw new Error("El username ya está registrado");
+  if (usernameExists) throw new Error(MESSAGES.USERNAME_EXISTE);
 
   // Encriptar contraseña
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -44,8 +47,8 @@ export const createUser = async (userData) => {
     birthDate,
     gender,
     password: hashedPassword,
-    roleId: roleId || (await Role.findOne({ where: { name: "user" } })).id,
-    statusId: statusId || (await Status.findOne({ where: { name: "active" } })).id
+    roleId: roleId || (await Role.findOne({ where: { name: ROLES.USER } })).id,
+    statusId: statusId || (await Status.findOne({ where: { name: STATUS.ACTIVE } })).id
   });
 
   return newUser;
@@ -55,7 +58,7 @@ export const updateUser = async (id, data) => {
 
   // 1️⃣ Buscar usuario SIN include
   const user = await User.findByPk(id);
-  if (!user) throw new Error("Usuario no encontrado");
+  if (!user) throw new Error(MESSAGES.USUARIO_NO_ENCONTRADO);
 
   // 2️⃣ Actualizar contraseña si viene
   if (password?.trim()) {
@@ -67,14 +70,14 @@ export const updateUser = async (id, data) => {
   // 3️⃣ Validar y actualizar rol si viene
   if (roleId) {
     const role = await Role.findByPk(roleId);
-    if (!role) throw new Error("Rol no válido");
+    if (!role) throw new Error(MESSAGES.ROL_NO_VALIDO);
     data.roleId = role.id;
   }
 
   // 4️⃣ Validar y actualizar estado si viene
   if (statusId) {
     const status = await Status.findByPk(statusId);
-    if (!status) throw new Error("Estado no válido");
+    if (!status) throw new Error(MESSAGES.ESTADP_NO_VALIDO);
     data.statusId = status.id;
   }
 
@@ -92,11 +95,11 @@ export const updateUser = async (id, data) => {
 
 export const deleteUser = async (id) => {
   const user = await User.findByPk(id);
-  if (!user) throw new Error("Usuario no encontrado");
+  if (!user) throw new Error(MESSAGES.USUARIO_NO_ENCONTRADO);
 
   // Obtener el status "inactive"
-  const inactiveStatus = await Status.findOne({ where: { name: "inactive" } });
-  if (!inactiveStatus) throw new Error("Estado 'inactive' no encontrado");
+  const inactiveStatus = await Status.findOne({ where: { name: STATUS.INACTIVE } });
+  if (!inactiveStatus) throw new Error(MESSAGES.ESTADO_INACTIVE_NO_ENCONTRADO);
 
   // Actualizar el usuario a inactivo
   await user.update({ statusId: inactiveStatus.id });

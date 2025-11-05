@@ -5,4 +5,12 @@ export const MESSAGES = {
   NO_PERMISSION_ADMIN: "Acceso restringido solo para administradores.",
   NO_PERMISSION_USER: "Acceso restringido solo para usuarios.",
   NO_PERMISSION: "No tienes permisos para acceder a esta sección.",
+  USERNAME_EXISTE: "El username ya está registrado",
+  CORREO_EXISTE: "El correo ya está registrado",
+  USUARIO_NO_ENCONTRADO: "Usuario no encontrado",
+  ROL_NO_VALIDO: "Rol no válido",
+  ESTADP_NO_VALIDO: "Estado no válido",
+  ESTADO_INACTIVE_NO_ENCONTRADO: "Estado 'inactive' no encontrado",
+  USUARIO_INACTIVO: "Usuario inactivo",
+  CONTRA_INCORRECTA: "Contraseña incorrecta",
 };
