@@ -13,8 +13,8 @@ export const MESSAGES = {
   ESTADO_INACTIVE_NO_ENCONTRADO: "Estado 'inactive' no encontrado",
   USUARIO_INACTIVO: "Usuario inactivo",
   CONTRA_INCORRECTA: "Contraseña incorrecta",
-    STATUS_NOT_FOUND: "Estado no encontrado",
+  STATUS_NOT_FOUND: "Estado no encontrado",
   INVALID_DATA: "Datos inválidos",
-    ROLE_NOT_FOUND: "Rol no encontrado",
+  ROLE_NOT_FOUND: "Rol no encontrado",
 
 };
