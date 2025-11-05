@@ -132,12 +132,12 @@ export const updateUser = async (id, data) => {
   });
 };
 
-export const deleteUser = async (id) => {
+export const activadoUser = async (id) => {
   const user = await User.findByPk(id);
   if (!user) throw new Error(MESSAGES.USUARIO_NO_ENCONTRADO);
 
   // Obtener el status "inactive"
-  const inactiveStatus = await Status.findOne({ where: { name: STATUS.INACTIVE } });
+  const inactiveStatus = await Status.findOne({ where: { name: STATUS.ACTIVE } });
   if (!inactiveStatus) throw new Error(MESSAGES.ESTADO_INACTIVE_NO_ENCONTRADO);
 
   // Actualizar el usuario a inactivo
@@ -145,3 +145,4 @@ export const deleteUser = async (id) => {
 
   return true;
 };
+
