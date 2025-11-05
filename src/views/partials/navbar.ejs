@@ -1,0 +1,12 @@
+<nav>
+  <a href="/">Inicio</a>
+
+  <% if (!user) { %>
+      <a href="/login">Login</a>
+      <a href="/register">Registro</a>
+  <% } else { %>
+      <a href="/dashboard">Panel</a>
+      <a href="/logout">Salir</a>
+      <span>Hola, <%= user.username %></span>
+  <% } %>
+</nav>

@@ -1,0 +1,29 @@
+<h2>Lista de Usuarios</h2>
+
+<a href="/users/create">Crear nuevo usuario</a>
+
+<table border="1" cellpadding="4">
+  <tr>
+    <th>ID</th>
+    <th>Nombre</th>
+    <th>Usuario</th>
+    <th>Rol</th>
+    <th>Estado</th>
+    <th>Acciones</th>
+  </tr>
+
+  <% users.forEach(u => { %>
+    <tr>
+      <td><%= u.id %></td>
+      <td><%= u.firstName %> <%= u.lastName %></td>
+      <td><%= u.username %></td>
+      <td><%= u.role?.name %></td>      <!-- <--- usar alias "role" -->
+      <td><%= u.status?.name %></td>    <!-- <--- usar alias "status" -->
+      <td>
+        <a href="/users/edit/<%= u.id %>">Editar</a> |
+        <a href="/users/delete/<%= u.id %>">Eliminar</a>
+      </td>
+    </tr>
+  <% }) %>
+
+</table>

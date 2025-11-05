@@ -1,0 +1,35 @@
+<h2>Editar Usuario</h2>
+
+<form action="/users/edit/<%= user.id %>" method="POST">
+
+  <label>Nombre:</label>
+  <input name="firstName" value="<%= user.firstName %>" required>
+
+  <label>Apellido:</label>
+  <input name="lastName" value="<%= user.lastName %>" required>
+
+  <label>Email:</label>
+  <input name="email" value="<%= user.email %>" required>
+
+  <label>Usuario(username):</label>
+  <input name="username" value="<%= user.username %>" required>
+
+  <label>Rol:</label>
+  <select name="roleId">
+    <% roles.forEach(r => { %>
+      <option value="<%= r.id %>" <%= user.roleId === r.id ? "selected" : "" %>><%= r.name %></option>
+    <% }) %>
+  </select>
+
+  <label>Estado:</label>
+  <select name="statusId">
+    <% statuses.forEach(s => { %>
+      <option value="<%= s.id %>" <%= user.statusId === s.id ? "selected" : "" %>><%= s.name %></option>
+    <% }) %>
+  </select>
+
+  <label>Contraseña (dejar vacío si no quieres cambiarla):</label>
+  <input type="password" name="password">
+
+  <button type="submit">Actualizar</button>
+</form>

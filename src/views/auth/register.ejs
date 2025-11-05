@@ -1,0 +1,38 @@
+<%- include('../layout', { title: "Registro", body: `
+<h2>Registro</h2>
+
+<form action="/register" method="POST">
+
+  <label>Nombre:</label>
+  <input type="text" name="firstName" required>
+
+  <label>Apellido:</label>
+  <input type="text" name="lastName" required>
+
+  <label>Teléfono:</label>
+  <input type="text" name="phone">
+
+  <label>Username:</label>
+  <input type="text" name="username" required>
+
+  <label>Email:</label>
+  <input type="email" name="email" required>
+
+  <label>Fecha de nacimiento:</label>
+  <input type="date" name="birthDate" required>
+
+  <label>Género:</label>
+  <select name="gender" required>
+    <option value="masculino">Masculino</option>
+    <option value="femenino">Femenino</option>
+    <option value="otro">Otro</option>
+  </select>
+
+  <label>Contraseña:</label>
+  <input type="password" name="password" required>
+
+  <button type="submit">Registrarme</button>
+</form>
+
+<a href="/login">Ir al login</a>
+` }) %>
