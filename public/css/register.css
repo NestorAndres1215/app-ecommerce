@@ -1,0 +1,39 @@
+    .input-focus:focus {
+      @apply ring-4 ring-primary/20 border-primary shadow-lg;
+    }
+
+    .btn-hover {
+      @apply transition-all duration-300 transform hover:scale-105 hover:shadow-xl;
+    }
+
+    .glass {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .select-wrapper {
+      position: relative;
+    }
+
+    .select-wrapper select {
+      appearance: none;
+      padding-right: 3rem;
+    }
+
+    .select-wrapper::after {
+      content: '\f078';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: #9ca3af;
+    }
+
+    .select-wrapper:focus-within::after {
+      color: #6366f1;
+    }

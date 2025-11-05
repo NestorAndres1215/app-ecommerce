@@ -3,73 +3,7 @@
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#6366f1',
-            'primary-hover': '#4f46e5',
-            dark: '#1e293b',
-            'dark-light': '#334155',
-          },
-          animation: {
-            'float': 'float 6s ease-in-out infinite',
-            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-          },
-          keyframes: {
-            float: {
-              '0%, 100%': { transform: 'translateY(0)' },
-              '50%': { transform: 'translateY(-10px)' }
-            }
-          }
-        }
-      }
-    }
-  </script>
-
-  <style>
-    .input-focus:focus {
-      @apply ring-4 ring-primary/20 border-primary shadow-lg;
-    }
-
-    .btn-hover {
-      @apply transition-all duration-300 transform hover:scale-105 hover:shadow-xl;
-    }
-
-    .glass {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .select-wrapper {
-      position: relative;
-    }
-
-    .select-wrapper select {
-      appearance: none;
-      padding-right: 3rem;
-    }
-
-    .select-wrapper::after {
-      content: '\f078';
-      font-family: 'Font Awesome 6 Free';
-      font-weight: 900;
-      position: absolute;
-      right: 1rem;
-      top: 50%;
-      transform: translateY(-50%);
-      pointer-events: none;
-      color: #9ca3af;
-    }
-
-    .select-wrapper:focus-within::after {
-      color: #6366f1;
-    }
-  </style>
+<link rel="stylesheet" href="/css/register.css">
 
 
 <body
@@ -278,57 +212,7 @@
   </div>
 
   <!-- Script: Mostrar/Ocultar contraseña -->
-  <script>
-    const genderBtn = document.getElementById('gender-btn');
-    const genderDropdown = document.getElementById('gender-dropdown');
-    const genderText = document.getElementById('gender-text');
-    const genderIcon = document.getElementById('gender-icon');
-    const genderInput = document.getElementById('gender-input');
-    const options = document.querySelectorAll('.gender-option');
-
-    // Abrir/cerrar dropdown
-    genderBtn.addEventListener('click', () => {
-      const isOpen = !genderDropdown.classList.contains('hidden');
-
-      if (isOpen) {
-        genderDropdown.classList.add('hidden', 'opacity-0', 'scale-95');
-        genderDropdown.classList.remove('block', 'opacity-100', 'scale-100');
-        genderIcon.classList.remove('rotate-180');
-      } else {
-        genderDropdown.classList.remove('hidden');
-        setTimeout(() => {
-          genderDropdown.classList.remove('opacity-0', 'scale-95');
-          genderDropdown.classList.add('opacity-100', 'scale-100');
-        }, 10);
-        genderIcon.classList.add('rotate-180');
-      }
-    });
-
-    // Seleccionar opción
-    options.forEach(option => {
-      option.addEventListener('click', () => {
-        const value = option.dataset.value;
-        const text = option.textContent.trim();
-
-        genderText.textContent = text;
-        genderText.classList.remove('text-gray-400');
-        genderText.classList.add('text-white');
-        genderInput.value = value;
-
-        // Cerrar dropdown
-        genderDropdown.classList.add('hidden', 'opacity-0', 'scale-95');
-        genderDropdown.classList.remove('block', 'opacity-100', 'scale-100');
-        genderIcon.classList.remove('rotate-180');
-      });
-    });
-
-    // Cerrar al hacer clic fuera
-    document.addEventListener('click', (e) => {
-      if (!genderBtn.contains(e.target) && !genderDropdown.contains(e.target)) {
-        genderDropdown.classList.add('hidden', 'opacity-0', 'scale-95');
-        genderDropdown.classList.remove('block', 'opacity-100', 'scale-100');
-        genderIcon.classList.remove('rotate-180');
-      }
-    });
+  <script src="/js/register.js">
+   
   </script>
 </body>
