@@ -22,7 +22,38 @@ export const getAllUsersNormal = async () => {
     ]
   });
 };
-
+export const getAllUsersACTIVEUSER = async () => {
+  return await User.findAll({
+    include: [
+      { model: Role, as: "role", where: { name: ROLES.USER } }, // solo admins
+      { model: Status, as: "status", where: { name: STATUS.ACTIVE } }
+    ]
+  });
+};
+export const getAllUsersACTIVEADMIN = async () => {
+  return await User.findAll({
+    include: [
+      { model: Role, as: "role", where: { name: ROLES.ADMIN } }, // solo admins
+      { model: Status, as: "status", where: { name: STATUS.ACTIVE } }
+    ]
+  });
+};
+export const getAllUsersINACTIVEUSER = async () => {
+  return await User.findAll({
+    include: [
+      { model: Role, as: "role", where: { name: ROLES.USER } }, // solo admins
+      { model: Status, as: "status", where: { name: STATUS.INACTIVE } }
+    ]
+  });
+};
+export const getAllUsersINACTIVEADMIN = async () => {
+  return await User.findAll({
+    include: [
+      { model: Role, as: "role", where: { name: ROLES.ADMIN } }, // solo admins
+      { model: Status, as: "status", where: { name: STATUS.INACTIVE } }
+    ]
+  });
+};
 export const getUserById = async (id) => {
   return await User.findByPk(id, {
     include: [
