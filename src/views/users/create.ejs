@@ -2,73 +2,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 <script src="https://cdn.tailwindcss.com"></script>
 
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          primary: '#6366f1',
-          'primary-hover': '#4f46e5',
-          success: '#10b981',
-          danger: '#ef4444',
-          glass: 'rgba(255, 255, 255, 0.1)',
-        },
-        animation: {
-          'float': 'float 6s ease-in-out infinite',
-          'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        },
-        keyframes: {
-          float: {
-            '0%, 100%': { transform: 'translateY(0)' },
-            '50%': { transform: 'translateY(-10px)' }
-          }
-        }
-      }
-    }
-  }
-</script>
-
-<style>
-  .glass {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-  }
-
-  .input-focus:focus {
-    @apply ring-4 ring-primary/20 border-primary shadow-lg;
-  }
-
-  .btn-hover {
-    @apply transition-all duration-300 transform hover:scale-105 hover:shadow-xl;
-  }
-
-  .select-wrapper {
-    position: relative;
-  }
-
-  .select-wrapper select {
-    appearance: none;
-    padding-right: 3rem;
-  }
-
-  .select-wrapper::after {
-    content: '\f078';
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    position: absolute;
-    right: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-    color: #9ca3af;
-  }
-
-  .select-wrapper:focus-within::after {
-    color: #6366f1;
-  }
-</style>
+<link rel="stylesheet" href="/css/user.css">
 
 <body
   class="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 flex items-center justify-center p-4  relative">
@@ -286,22 +220,8 @@
     </div>
   </div>
 
-  <!-- Script: Mostrar/Ocultar contraseña -->
-  <script>
-    document.querySelectorAll('[type="password"]').forEach(input => {
-      const toggle = input.parentElement.querySelector('button');
-      if (!toggle) return;
+  <script src="/js/user.js">
 
-      toggle.addEventListener('click', () => {
-        const icon = toggle.querySelector('i');
-        if (input.type === 'password') {
-          input.type = 'text';
-          icon.classList.replace('fa-eye-slash', 'fa-eye');
-        } else {
-          input.type = 'password';
-          icon.classList.replace('fa-eye', 'fa-eye-slash');
-        }
-      });
-    });
   </script>
+
 </body>

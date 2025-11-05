@@ -61,3 +61,19 @@
         userCount.textContent = visible;
       });
     });
+
+        document.querySelectorAll('[type="password"]').forEach(input => {
+      const toggle = input.parentElement.querySelector('button');
+      if (!toggle) return;
+
+      toggle.addEventListener('click', () => {
+        const icon = toggle.querySelector('i');
+        if (input.type === 'password') {
+          input.type = 'text';
+          icon.classList.replace('fa-eye-slash', 'fa-eye');
+        } else {
+          input.type = 'password';
+          icon.classList.replace('fa-eye', 'fa-eye-slash');
+        }
+      });
+    });
