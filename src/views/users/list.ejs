@@ -1,29 +1,260 @@
-<h2>Lista de Usuarios</h2>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lista de Usuarios</title>
 
-<a href="/users/create">Crear nuevo usuario</a>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
-<table border="1" cellpadding="4">
-  <tr>
-    <th>ID</th>
-    <th>Nombre</th>
-    <th>Usuario</th>
-    <th>Rol</th>
-    <th>Estado</th>
-    <th>Acciones</th>
-  </tr>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-  <% users.forEach(u => { %>
-    <tr>
-      <td><%= u.id %></td>
-      <td><%= u.firstName %> <%= u.lastName %></td>
-      <td><%= u.username %></td>
-      <td><%= u.role?.name %></td>      <!-- <--- usar alias "role" -->
-      <td><%= u.status?.name %></td>    <!-- <--- usar alias "status" -->
-      <td>
-        <a href="/users/edit/<%= u.id %>">Editar</a> |
-        <a href="/users/delete/<%= u.id %>">Eliminar</a>
-      </td>
-    </tr>
-  <% }) %>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#6366f1',
+            'primary-hover': '#4f46e5',
+            success: '#10b981',
+            warning: '#f59e0b',
+            danger: '#ef4444',
+            info: '#3b82f6',
+            dark: '#1e293b',
+            glass: 'rgba(255, 255, 255, 0.1)',
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-10px)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
 
-</table>
+  <style>
+    .glass {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .btn-hover {
+      @apply transition-all duration-300 transform hover:scale-105 hover:shadow-lg;
+    }
+    .badge {
+      @apply px-3 py-1 rounded-full text-xs font-medium uppercase tracking-wider;
+    }
+    .filter-btn {
+      @apply px-4 py-2 rounded-xl font-medium text-sm transition-all duration-200 flex items-center gap-2;
+    }
+    .filter-btn.active {
+      @apply bg-primary text-white shadow-lg;
+    }
+    .filter-btn:not(.active) {
+      @apply bg-white/10 text-gray-300 hover:bg-white/20;
+    }
+    .table-container {
+      overflow-x-auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .table th {
+      @apply bg-white/10 text-left text-sm font-semibold text-gray-200 uppercase tracking-wider;
+    }
+    .table td {
+      @apply border-t border-white/10;
+    }
+    .table tr:hover {
+      @apply bg-white/5 transition-colors;
+    }
+    .hidden-row {
+      display: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 text-white p-4 md:p-8">
+
+  <!-- Fondo animado -->
+  <div class="absolute inset-0 -z-10 overflow-hidden">
+    <div class="absolute top-10 left-10 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse-slow"></div>
+    <div class="absolute bottom-10 right-10 w-80 h-80 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse-slow animation-delay-2000"></div>
+  </div>
+
+  <div class="max-w-7xl mx-auto">
+
+    <!-- Header -->
+    <div class="glass rounded-3xl p-6 md:p-8 mb-6 shadow-2xl">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div class="flex items-center gap-4">
+          <div class="w-14 h-14 bg-gradient-to-br from-primary to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+            <i class="fas fa-users text-white text-2xl"></i>
+          </div>
+          <div>
+            <h1 class="text-3xl font-bold">Lista de Usuarios</h1>
+            <p class="text-gray-300 text-sm">Administra y controla todos los usuarios del sistema</p>
+          </div>
+        </div>
+
+        <!-- Botón Crear -->
+        <a href="/users/create" class="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-primary-hover text-white font-medium px-6 py-3 rounded-xl shadow-lg btn-hover">
+          <i class="fas fa-user-plus"></i>
+          Crear nuevo usuario
+        </a>
+      </div>
+    </div>
+
+    <!-- FILTRO DE ESTADO -->
+    <div class="glass rounded-2xl p-4 mb-6 shadow-xl">
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-2">
+          <i class="fas fa-filter text-primary"></i>
+          <span class="text-sm font-medium text-gray-200">Filtrar por estado:</span>
+        </div>
+        <div class="flex gap-2">
+          <button data-filter="all" class="filter-btn active">
+            <i class="fas fa-users"></i> Todos
+          </button>
+          <button data-filter="activo" class="filter-btn">
+            <i class="fas fa-circle-check text-success"></i> Activo
+          </button>
+          <button data-filter="inactivo" class="filter-btn">
+            <i class="fas fa-circle-xmark text-gray-400"></i> Inactivo
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contador dinámico -->
+    <p class="text-sm text-gray-300 mb-4 text-center md:text-left">
+      Mostrando <strong id="user-count"><%= users.length %></strong> de <strong><%= users.length %></strong> usuarios
+    </p>
+
+    <!-- Tabla -->
+    <div class="glass rounded-3xl shadow-2xl overflow-hidden">
+      <div class="table-container">
+        <table class="table w-full">
+          <thead>
+            <tr>
+              <th class="px-6 py-4">ID</th>
+              <th class="px-6 py-4">Nombre Completo</th>
+              <th class="px-6 py-4">Usuario</th>
+              <th class="px-6 py-4">Rol</th>
+              <th class="px-6 py-4">Estado</th>
+              <th class="px-6 py-4 text-center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="users-table-body" class="divide-y divide-white/10">
+            <% users.forEach(u => { %>
+              <tr class="user-row" data-status="<%= (u.status?.name || '').toLowerCase() %>">
+                <td class="px-6 py-4 text-sm font-mono">#<%= u.id %></td>
+                <td class="px-6 py-4">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-primary/20 to-purple-600/20 rounded-full flex items-center justify-center">
+                      <i class="fas fa-user text-primary"></i>
+                    </div>
+                    <div>
+                      <p class="font-medium"><%= u.firstName %> <%= u.lastName %></p>
+                      <p class="text-xs text-gray-400"><%= u.email %></p>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-4">
+                  <span class="font-medium text-primary">@<%= u.username %></span>
+                </td>
+                <td class="px-6 py-4">
+                  <span class="badge <%= u.role?.name === 'admin' ? 'bg-purple-600 text-white' : 
+                                        u.role?.name === 'moderador' ? 'bg-blue-600 text-white' : 
+                                        'bg-gray-600 text-white' %>">
+                    <%= u.role?.name || 'Sin rol' %>
+                  </span>
+                </td>
+                <td class="px-6 py-4">
+                  <span class="badge <%= u.status?.name === 'activo' ? 'bg-success text-white' : 
+                                        u.status?.name === 'inactivo' ? 'bg-gray-600 text-white' : 
+                                        u.status?.name === 'suspendido' ? 'bg-danger text-white' : 
+                                        'bg-warning text-white' %>">
+                    <%= u.status?.name || 'Desconocido' %>
+                  </span>
+                </td>
+                <td class="px-6 py-4 text-center">
+                  <div class="flex items-center justify-center gap-2">
+                    <a href="/users/edit/<%= u.id %>" 
+                       class="inline-flex items-center gap-1 px-3 py-1.5 bg-info/20 text-info rounded-lg hover:bg-info/30 btn-hover text-sm font-medium">
+                      <i class="fas fa-edit"></i> Editar
+                    </a>
+                    <a href="/users/delete/<%= u.id %>" 
+                       onclick="return confirm('¿Eliminar usuario <%= u.username %>?')"
+                       class="inline-flex items-center gap-1 px-3 py-1.5 bg-danger/20 text-danger rounded-lg hover:bg-danger/30 btn-hover text-sm font-medium">
+                      <i class="fas fa-trash"></i> Eliminar
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+
+        <!-- Empty state -->
+        <div id="empty-state" class="hidden text-center py-12">
+          <i class="fas fa-users-slash text-6xl text-gray-500 mb-4"></i>
+          <p class="text-xl text-gray-400">No hay usuarios con este filtro</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- JavaScript para FILTRO -->
+  <script>
+    const filterButtons = document.querySelectorAll('[data-filter]');
+    const userRows = document.querySelectorAll('.user-row');
+    const tableBody = document.getElementById('users-table-body');
+    const emptyState = document.getElementById('empty-state');
+    const userCount = document.getElementById('user-count');
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const filter = btn.dataset.filter;
+
+        // Actualizar botón activo
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        let visible = 0;
+
+        userRows.forEach(row => {
+          const status = row.dataset.status;
+
+          if (filter === 'all' || status === filter) {
+            row.classList.remove('hidden-row');
+            visible++;
+          } else {
+            row.classList.add('hidden-row');
+          }
+        });
+
+        // Mostrar/ocultar empty state
+        if (visible === 0) {
+          emptyState.classList.remove('hidden');
+          tableBody.style.display = 'none';
+        } else {
+          emptyState.classList.add('hidden');
+          tableBody.style.display = '';
+        }
+
+        // Actualizar contador
+        userCount.textContent = visible;
+      });
+    });
+  </script>
+
+</body>
+</html>

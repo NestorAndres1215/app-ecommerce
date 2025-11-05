@@ -1,48 +1,330 @@
-<h2>Crear Usuario</h2>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Crear Usuario</title>
 
-<form action="/users/create" method="POST">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <script src="https://cdn.tailwindcss.com"></script>
 
-  <label>Nombre:</label>
-  <input type="text" name="firstName" required>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#6366f1',
+            'primary-hover': '#4f46e5',
+            success: '#10b981',
+            danger: '#ef4444',
+            glass: 'rgba(255, 255, 255, 0.1)',
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-10px)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
 
-  <label>Apellido:</label>
-  <input type="text" name="lastName" required>
+  <style>
+    .glass {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .input-focus:focus {
+      @apply ring-4 ring-primary/20 border-primary shadow-lg;
+    }
+    .btn-hover {
+      @apply transition-all duration-300 transform hover:scale-105 hover:shadow-xl;
+    }
+    .select-wrapper {
+      position: relative;
+    }
+    .select-wrapper select {
+      appearance: none;
+      padding-right: 3rem;
+    }
+    .select-wrapper::after {
+      content: '\f078';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: #9ca3af;
+    }
+    .select-wrapper:focus-within::after {
+      color: #6366f1;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 flex items-center justify-center p-4  relative">
 
-  <label>Email:</label>
-  <input type="email" name="email" required>
+  <!-- Fondo animado -->
+  <div class="absolute inset-0 -z-10">
+    <div class="absolute top-10 left-10 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse-slow"></div>
+    <div class="absolute bottom-10 right-10 w-80 h-80 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse-slow animation-delay-2000"></div>
+    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-float"></div>
+  </div>
 
-  <label>Usuario (username):</label>
-  <input type="text" name="username" required>
+  <!-- Tarjeta de Creación -->
+  <div class="w-full max-w-3xl">
+    <div class="glass rounded-3xl shadow-2xl p-6 md:p-10 transform transition-all duration-500 hover:scale-[1.01]">
+      
+      <!-- Título -->
+      <div class="text-center mb-8">
+        <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary to-purple-600 rounded-2xl shadow-lg mb-4 animate-pulse">
+          <i class="fas fa-user-plus text-white text-2xl"></i>
+        </div>
+        <h2 class="text-3xl font-bold text-white mb-2">Crear Nuevo Usuario</h2>
+        <p class="text-gray-300 text-sm">Completa todos los campos para registrar un nuevo usuario</p>
+      </div>
 
-  <label>Teléfono:</label>
-  <input type="text" name="phone">
+      <!-- Formulario -->
+      <form action="/users/create" method="POST" class="space-y-5">
 
-  <label>Fecha de Nacimiento:</label>
-  <input type="date" name="birthDate" required>
+        <!-- Fila: Nombre y Apellido -->
+        <div class="grid md:grid-cols-2 gap-5">
+          <div class="relative group">
+            <label class="block text-sm font-medium text-gray-200 mb-2 flex items-center gap-2">
+              <i class="fas fa-user text-primary"></i>
+              Nombre
+            </label>
+            <div class="relative">
+              <input 
+                type="text" 
+                name="firstName" 
+                required 
+                placeholder="Juan"
+                class="w-full px-4 py-3 pl-12 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none input-focus transition-all duration-300"
+              />
+              <i class="fas fa-id-card absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors"></i>
+            </div>
+          </div>
 
-  <label>Género:</label>
-  <select name="gender" required>
-    <option value="masculino">Masculino</option>
-    <option value="femenino">Femenino</option>
-    <option value="otro">Otro</option>
-  </select>
+          <div class="relative group">
+            <label class="block text-sm font-medium text-gray-200 mb-2 flex items-center gap-2">
+              <i class="fas fa-user-tag text-primary"></i>
+              Apellido
+            </label>
+            <div class="relative">
+              <input 
+                type="text" 
+                name="lastName" 
+                required 
+                placeholder="Pérez"
+                class="w-full px-4 py-3 pl-12 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none input-focus transition-all duration-300"
+              />
+              <i class="fas fa-user-tag absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors"></i>
+            </div>
+          </div>
+        </div>
 
-  <label>Contraseña:</label>
-  <input type="password" name="password" required>
+        <!-- Email -->
+        <div class="relative group">
+          <label class="block text-sm font-medium text-gray-200 mb-2 flex items-center gap-2">
+            <i class="fas fa-envelope text-primary"></i>
+            Email
+          </label>
+          <div class="relative">
+            <input 
+              type="email" 
+              name="email" 
+              required 
+              placeholder="tu@ejemplo.com"
+              class="w-full px-4 py-3 pl-12 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none input-focus transition-all duration-300"
+            />
+            <i class="fas fa-envelope absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors"></i>
+          </div>
+        </div>
 
-  <label>Rol:</label>
-  <select name="roleId">
-    <% roles.forEach(r => { %>
-      <option value="<%= r.id %>"><%= r.name %></option>
-    <% }) %>
-  </select>
+        <!-- Username -->
+        <div class="relative group">
+          <label class="block text-sm font-medium text-gray-200 mb-2 flex items-center gap-2">
+            <i class="fas fa-at text-primary"></i>
+            Usuario
+          </label>
+          <div class="relative">
+            <input 
+              type="text" 
+              name="username" 
+              required 
+              placeholder="@usuario"
+              class="w-full px-4 py-3 pl-12 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none input-focus transition-all duration-300"
+            />
+            <i class="fas fa-at absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors"></i>
+          </div>
+        </div>
 
-  <label>Estado:</label>
-  <select name="statusId">
-    <% statuses.forEach(s => { %>
-      <option value="<%= s.id %>"><%= s.name %></option>
-    <% }) %>
-  </select>
+        <!-- Teléfono (opcional) -->
+        <div class="relative group">
+          <label class="block text-sm font-medium text-gray-200 mb-2 flex items-center gap-2">
+            <i class="fas fa-phone text-primary"></i>
+            Teléfono <span class="text-xs text-gray-400">(opcional)</span>
+          </label>
+          <div class="relative">
+            <input 
+              type="text" 
+              name="phone" 
+              placeholder="+54 11 1234-5678"
+              class="w-full px-4 py-3 pl-12 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none input-focus transition-all duration-300"
+            />
+            <i class="fas fa-mobile-alt absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors"></i>
+          </div>
+        </div>
 
-  <button type="submit">Guardar</button>
-</form>
+        <!-- Fila: Fecha y Género -->
+        <div class="grid md:grid-cols-2 gap-5">
+          <div class="relative group">
+            <label class="block text-sm font-medium text-gray-200 mb-2 flex items-center gap-2">
+              <i class="fas fa-calendar-alt text-primary"></i>
+              Fecha de Nacimiento
+            </label>
+            <div class="relative">
+              <input 
+                type="date" 
+                name="birthDate" 
+                required 
+                class="w-full px-4 py-3 pl-12 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none input-focus transition-all duration-300"
+              />
+              <i class="fas fa-calendar-day absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors"></i>
+            </div>
+          </div>
+
+          <div class="relative group">
+            <label class="block text-sm font-medium text-gray-200 mb-2 flex items-center gap-2">
+              <i class="fas fa-venus-mars text-primary"></i>
+              Género
+            </label>
+            <div class="select-wrapper">
+              <select 
+                name="gender" 
+                required 
+                class="w-full px-4 py-3 pl-12 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none input-focus transition-all duration-300"
+              >
+                <option value="" disabled selected>Selecciona...</option>
+                <option value="masculino">Masculino</option>
+                <option value="femenino">Femenino</option>
+                <option value="otro">Otro</option>
+              </select>
+              <i class="fas fa-venus-mars absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors pointer-events-none"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contraseña -->
+        <div class="relative group">
+          <label class="block text-sm font-medium text-gray-200 mb-2 flex items-center gap-2">
+            <i class="fas fa-lock text-primary"></i>
+            Contraseña
+          </label>
+          <div class="relative">
+            <input 
+              type="password" 
+              name="password" 
+              required 
+              placeholder="••••••••"
+              class="w-full px-4 py-3 pl-12 pr-12 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none input-focus transition-all duration-300"
+            />
+            <i class="fas fa-key absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors"></i>
+            <button type="button" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors">
+              <i class="fas fa-eye-slash"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Fila: Rol y Estado -->
+        <div class="grid md:grid-cols-2 gap-5">
+          <div class="relative group">
+            <label class="block text-sm font-medium text-gray-200 mb-2 flex items-center gap-2">
+              <i class="fas fa-shield-alt text-primary"></i>
+              Rol
+            </label>
+            <div class="select-wrapper">
+              <select 
+                name="roleId" 
+                required 
+                class="w-full px-4 py-3 pl-12 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none input-focus transition-all duration-300"
+              >
+                <option value="" disabled selected>Selecciona un rol</option>
+                <% roles.forEach(r => { %>
+                  <option value="<%= r.id %>"><%= r.name %></option>
+                <% }) %>
+              </select>
+              <i class="fas fa-shield-alt absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors pointer-events-none"></i>
+            </div>
+          </div>
+
+          <div class="relative group">
+            <label class="block text-sm font-medium text-gray-200 mb-2 flex items-center gap-2">
+              <i class="fas fa-circle-check text-primary"></i>
+              Estado
+            </label>
+            <div class="select-wrapper">
+              <select 
+                name="statusId" 
+                required 
+                class="w-full px-4 py-3 pl-12 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none input-focus transition-all duration-300"
+              >
+                <option value="" disabled selected>Selecciona un estado</option>
+                <% statuses.forEach(s => { %>
+                  <option value="<%= s.id %>"><%= s.name %></option>
+                <% }) %>
+              </select>
+              <i class="fas fa-circle-check absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors pointer-events-none"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botón Guardar -->
+        <button 
+          type="submit" 
+          class="w-full py-4 bg-gradient-to-r from-primary to-primary-hover text-white font-semibold rounded-xl shadow-lg btn-hover flex items-center justify-center gap-3 group mt-6"
+        >
+          <span>Crear Usuario</span>
+          <i class="fas fa-user-check group-hover:translate-x-1 transition-transform"></i>
+        </button>
+      </form>
+
+      <!-- Volver -->
+      <div class="mt-6 text-center">
+        <a href="/users" class="text-primary font-medium hover:underline hover:text-white transition-colors">
+          Volver a la lista
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script: Mostrar/Ocultar contraseña -->
+  <script>
+    document.querySelectorAll('[type="password"]').forEach(input => {
+      const toggle = input.parentElement.querySelector('button');
+      if (!toggle) return;
+      
+      toggle.addEventListener('click', () => {
+        const icon = toggle.querySelector('i');
+        if (input.type === 'password') {
+          input.type = 'text';
+          icon.classList.replace('fa-eye-slash', 'fa-eye');
+        } else {
+          input.type = 'password';
+          icon.classList.replace('fa-eye', 'fa-eye-slash');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

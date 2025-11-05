@@ -1,2 +1,162 @@
-<h1>Panel Usuario</h1>
-<p>Bienvenido <strong><%= user.firstName %> <%= user.lastName %></strong></p>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Panel de Usuario</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#6366f1',
+            'primary-hover': '#4f46e5',
+            success: '#10b981',
+            glass: 'rgba(255, 255, 255, 0.1)',
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-10px)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .glass {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .card-hover {
+      @apply transition-all duration-300 transform hover:scale-105 hover:shadow-2xl;
+    }
+    .btn-hover {
+      @apply transition-all duration-200 hover:shadow-lg;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 text-white p-4 md:p-8">
+
+  <!-- Fondo animado -->
+  <div class="absolute inset-0 -z-10 overflow-hidden">
+    <div class="absolute top-10 left-10 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse-slow"></div>
+    <div class="absolute bottom-10 right-10 w-80 h-80 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse-slow animation-delay-2000"></div>
+    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-float"></div>
+  </div>
+
+  <div class="max-w-4xl mx-auto">
+
+    <!-- Header -->
+    <div class="glass rounded-3xl p-6 md:p-10 mb-8 shadow-2xl">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+        <div class="flex items-center gap-4">
+          <!-- Avatar -->
+          <div class="relative">
+            <div class="w-20 h-20 bg-gradient-to-br from-primary to-primary-hover rounded-full flex items-center justify-center shadow-lg">
+              <i class="fas fa-user text-white text-3xl"></i>
+            </div>
+            <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-success rounded-full border-2 border-white flex items-center justify-center">
+              <i class="fas fa-check text-white text-xs"></i>
+            </div>
+          </div>
+          <div>
+            <h1 class="text-3xl md:text-4xl font-bold">¡Hola, <%= user.firstName %>!</h1>
+            <p class="text-gray-300">Bienvenido a tu panel personal</p>
+          </div>
+        </div>
+
+        <!-- Cerrar sesión -->
+        <a href="/logout" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white/10 rounded-xl text-sm font-medium hover:bg-white/20 transition-all btn-hover">
+          <i class="fas fa-sign-out-alt"></i>
+          Cerrar sesión
+        </a>
+      </div>
+    </div>
+
+    <!-- Tarjeta de Información Personal -->
+    <div class="glass rounded-3xl p-6 md:p-8 shadow-xl mb-6">
+      <h2 class="text-xl font-semibold mb-5 flex items-center gap-2">
+        <i class="fas fa-id-card text-primary"></i>
+        Información Personal
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-sm">
+        <div>
+          <p class="text-gray-400">Nombre completo</p>
+          <p class="font-medium"><%= user.firstName %> <%= user.lastName %></p>
+        </div>
+        <div>
+          <p class="text-gray-400">Usuario</p>
+          <p class="font-medium text-primary">@<%= user.username %></p>
+        </div>
+        <div>
+          <p class="text-gray-400">Email</p>
+          <p class="font-medium"><%= user.email %></p>
+        </div>
+        <div>
+          <p class="text-gray-400">Estado</p>
+          <p class="font-medium">
+            <span class="inline-flex items-center gap-1">
+              <i class="fas fa-circle text-success text-xs"></i>
+              <%= user.status?.name || 'Activo' %>
+            </span>
+          </p>
+        </div>
+        <% if (user.phone) { %>
+          <div>
+            <p class="text-gray-400">Teléfono</p>
+            <p class="font-medium"><%= user.phone %></p>
+          </div>
+        <% } %>
+        <% if (user.birthDate) { %>
+          <div>
+            <p class="text-gray-400">Fecha de nacimiento</p>
+            <p class="font-medium"><%= new Date(user.birthDate).toLocaleDateString('es-ES') %></p>
+          </div>
+        <% } %>
+      </div>
+    </div>
+
+    <!-- Acciones rápidas (opcional) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Editar Perfil -->
+      <a href="/users/edit/<%= user.id %>" class="glass rounded-3xl p-6 card-hover group text-center">
+        <div class="w-16 h-16 bg-gradient-to-br from-primary to-primary-hover rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:animate-pulse">
+          <i class="fas fa-user-edit text-white text-2xl"></i>
+        </div>
+        <h3 class="text-lg font-semibold mb-1">Editar Perfil</h3>
+        <p class="text-sm text-gray-300">Actualiza tu información personal</p>
+      </a>
+
+      <!-- Cambiar Contraseña -->
+      <a href="/users/change-password" class="glass rounded-3xl p-6 card-hover group text-center">
+        <div class="w-16 h-16 bg-gradient-to-br from-success to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:animate-pulse">
+          <i class="fas fa-key text-white text-2xl"></i>
+        </div>
+        <h3 class="text-lg font-semibold mb-1">Cambiar Contraseña</h3>
+        <p class="text-sm text-gray-300">Mejora la seguridad de tu cuenta</p>
+      </a>
+    </div>
+
+    <!-- Mensaje motivacional -->
+    <div class="mt-8 text-center text-gray-300 text-sm">
+      <p>Que tengas un excelente día, <strong><%= user.firstName %></strong></p>
+    </div>
+
+  </div>
+
+</body>
+</html>

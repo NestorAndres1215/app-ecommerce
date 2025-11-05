@@ -1,15 +1,160 @@
-<%- include('../layout', { title: "Login", body: `
-<h2>Login</h2>
 
-<form action="/login" method="POST">
-  <label>Email:</label>
-  <input type="email" name="email" required>
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
-  <label>Contraseña:</label>
-  <input type="password" name="password" required>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-  <button type="submit">Ingresar</button>
-</form>
+  <!-- Configuración personalizada de Tailwind -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#6366f1',
+            'primary-hover': '#4f46e5',
+            dark: '#1e293b',
+            'dark-light': '#334155',
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-10px)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
 
-<a href="/register">Crear cuenta</a>
-` }) %>
+  <style>
+    .input-focus:focus {
+      @apply ring-4 ring-primary/20 border-primary shadow-lg;
+    }
+    .btn-hover {
+      @apply transition-all duration-300 transform hover:scale-105 hover:shadow-xl;
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+  </style>
+
+<body class="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 flex items-center justify-center p-4 overflow-hidden relative">
+
+  <!-- Fondo animado sutil -->
+  <div class="absolute inset-0 -z-10">
+    <div class="absolute top-10 left-10 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse-slow"></div>
+    <div class="absolute bottom-10 right-10 w-80 h-80 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse-slow animation-delay-2000"></div>
+    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-float"></div>
+  </div>
+
+  <!-- Tarjeta de Login -->
+  <div class="w-full max-w-md">
+    <div class="glass rounded-3xl shadow-2xl p-8 md:p-10 transform transition-all duration-500 hover:scale-[1.02]">
+      
+      <!-- Logo / Título con icono -->
+      <div class="text-center mb-8">
+        <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary to-purple-600 rounded-2xl shadow-lg mb-4 animate-pulse">
+          <i class="fas fa-shield-alt text-white text-2xl"></i>
+        </div>
+        <h2 class="text-3xl font-bold text-white mb-2">Bienvenido</h2>
+        <p class="text-gray-300 text-sm">Ingresa tus credenciales para continuar</p>
+      </div>
+
+      <!-- Formulario -->
+      <form action="/login" method="POST" class="space-y-6">
+        
+        <!-- Email -->
+        <div class="relative group">
+          <label class="block text-sm font-medium text-gray-200 mb-2 flex items-center gap-2">
+            <i class="fas fa-envelope text-primary"></i>
+            Email
+          </label>
+          <div class="relative">
+            <input 
+              type="email" 
+              name="email" 
+              required 
+              placeholder="tu@ejemplo.com"
+              class="w-full px-4 py-3 pl-12 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none input-focus transition-all duration-300"
+            />
+            <i class="fas fa-user absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors"></i>
+          </div>
+        </div>
+
+        <!-- Contraseña -->
+        <div class="relative group">
+          <label class="block text-sm font-medium text-gray-200 mb-2 flex items-center gap-2">
+            <i class="fas fa-lock text-primary"></i>
+            Contraseña
+          </label>
+          <div class="relative">
+            <input 
+              type="password" 
+              name="password" 
+              required 
+              placeholder="••••••••"
+              class="w-full px-4 py-3 pl-12 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none input-focus transition-all duration-300"
+            />
+            <i class="fas fa-key absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors"></i>
+            <button type="button" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors">
+              <i class="fas fa-eye-slash"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Botón Submit -->
+        <button 
+          type="submit" 
+          class="w-full py-4 bg-gradient-to-r from-primary to-primary-hover text-white font-semibold rounded-xl shadow-lg btn-hover flex items-center justify-center gap-3 group"
+        >
+          <span>Ingresar</span>
+          <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+        </button>
+      </form>
+
+      <!-- Enlace de registro -->
+      <div class="mt-6 text-center">
+        <p class="text-gray-300 text-sm">
+          ¿No tienes cuenta? 
+          <a href="/register" class="text-primary font-medium hover:underline hover:text-white transition-colors">
+            Crear cuenta
+          </a>
+        </p>
+      </div>
+
+      <!-- Decoración inferior -->
+      <div class="mt-8 flex justify-center gap-2">
+        <div class="w-2 h-2 bg-primary/50 rounded-full animate-bounce"></div>
+        <div class="w-2 h-2 bg-purple-500/50 rounded-full animate-bounce animation-delay-200"></div>
+        <div class="w-2 h-2 bg-pink-500/50 rounded-full animate-bounce animation-delay-400"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script para mostrar/ocultar contraseña (opcional) -->
+  <script>
+    document.querySelectorAll('[type="password"]').forEach(input => {
+      const toggle = input.parentElement.querySelector('button');
+      if (!toggle) return;
+      
+      toggle.addEventListener('click', () => {
+        const icon = toggle.querySelector('i');
+        if (input.type === 'password') {
+          input.type = 'text';
+          icon.classList.replace('fa-eye-slash', 'fa-eye');
+        } else {
+          input.type = 'password';
+          icon.classList.replace('fa-eye', 'fa-eye-slash');
+        }
+      });
+    });
+  </script>
+</body>
