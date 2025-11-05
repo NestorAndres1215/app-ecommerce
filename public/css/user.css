@@ -12,3 +12,47 @@
   .btn-hover {
     @apply transition-all duration-200 hover:shadow-lg;
   }
+
+
+
+
+  .btn-hover {
+    @apply transition-all duration-300 transform hover:scale-105 hover:shadow-lg;
+  }
+
+  .badge {
+    @apply px-3 py-1 rounded-full text-xs font-medium uppercase tracking-wider;
+  }
+
+  .filter-btn {
+    @apply px-4 py-2 rounded-xl font-medium text-sm transition-all duration-200 flex items-center gap-2;
+  }
+
+  .filter-btn.active {
+    @apply bg-primary text-white shadow-lg;
+  }
+
+  .filter-btn:not(.active) {
+    @apply bg-white/10 text-gray-300 hover:bg-white/20;
+  }
+
+  .table-container {
+    overflow-x-auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table th {
+    @apply bg-white/10 text-left text-sm font-semibold text-gray-200 uppercase tracking-wider;
+  }
+
+  .table td {
+    @apply border-t border-white/10;
+  }
+
+  .table tr:hover {
+    @apply bg-white/5 transition-colors;
+  }
+
+  .hidden-row {
+    display: none;
+  }

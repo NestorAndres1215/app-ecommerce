@@ -20,3 +20,44 @@
       }
     }
   }
+
+      const filterButtons = document.querySelectorAll('[data-filter]');
+    const userRows = document.querySelectorAll('.user-row');
+    const tableBody = document.getElementById('users-table-body');
+    const emptyState = document.getElementById('empty-state');
+    const userCount = document.getElementById('user-count');
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const filter = btn.dataset.filter;
+
+        // Actualizar botón activo
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        let visible = 0;
+
+        userRows.forEach(row => {
+          const status = row.dataset.status;
+
+          if (filter === 'all' || status === filter) {
+            row.classList.remove('hidden-row');
+            visible++;
+          } else {
+            row.classList.add('hidden-row');
+          }
+        });
+
+        // Mostrar/ocultar empty state
+        if (visible === 0) {
+          emptyState.classList.remove('hidden');
+          tableBody.style.display = 'none';
+        } else {
+          emptyState.classList.add('hidden');
+          tableBody.style.display = '';
+        }
+
+        // Actualizar contador
+        userCount.textContent = visible;
+      });
+    });
